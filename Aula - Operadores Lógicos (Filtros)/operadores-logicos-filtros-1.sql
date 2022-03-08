@@ -65,3 +65,53 @@ USE NORTHWND
 --Ùso do operador like: localizar valores que começam com 'a' e que terminam com 'o'
 	SELECT * FROM Customers
 		WHERE ContactName LIKE 'a%o'
+
+--Uso do operador LIKE com Coringa
+USE AdventureWorks2014
+	 SELECT BusinessEntityID,
+			FirstName,
+			LastName
+	 FROM Person.Person WHERE FirstName LIKE '[CS]he%'
+
+--Uso do operador NOT
+	 SELECT ProductNumber,
+			ProductID,
+			NAME,
+			Color,
+			StandardCost
+	 FROM Production.Product
+		WHERE ProductNumber LIKE 'BK-%'
+		AND Color = 'Silver'
+		AND NOT StandardCost > 400
+
+--Uso do operador OR
+	 SELECT FirstName,
+			LastName,
+			Shift,
+			Department
+	 FROM HumanResources.vEmployeeDepartmentHistory
+		WHERE Department = 'Quality Assurance'
+			AND (Shift = 'Night' OR Shift = 'Evening')
+
+--Uso do operador IS NULL
+
+	 SELECT FirstName,
+			MiddleName,
+			LastName 
+	 FROM Person.Person
+		WHERE MiddleName IS NULL
+
+--Uso do operador IS NOT NULL
+
+	 SELECT FirstName,
+			MiddleName,
+			LastName 
+	 FROM Person.Person
+		WHERE MiddleName IS NOT NULL
+
+--Exemplo da cláusula HAVING
+USE NORTHWND
+	 SELECT COUNT(CustomerID),
+			Country
+	 FROM Customers
+	 GROUP BY Country HAVING COUNT(CustomerID) > 5
