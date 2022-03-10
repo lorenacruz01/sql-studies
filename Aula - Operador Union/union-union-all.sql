@@ -1,0 +1,59 @@
+USE NORTHWND
+--SIMULANDO ERRO UNION
+/*SELECT 1 
+UNION 
+SELECT 'A'    ERRO POIS NÃO POSSUEM O MESMO TIPO*/
+
+SELECT '1' 
+UNION 
+SELECT 'A'
+
+/*SELECT '1',1 
+UNION 
+SELECT 'A'	 ERRO POIS OS SELECTS NÃO POSSUEM A MESMA QUANTIDADE DE COLUNAS*/
+
+SELECT '1',1 
+UNION 
+SELECT 'A',2
+
+
+--EXEMPLO 1 USANDO O UNION
+SELECT City
+FROM customers
+UNION
+SELECT City
+FROM Suppliers
+ORDER BY City
+
+--EXEMPLO 1 USANDO O UNION ALL
+
+SELECT 'CLI', City
+FROM customers
+UNION ALL
+SELECT 'FORNEC',City
+FROM Suppliers
+ORDER BY City
+
+--EXEMPLO 2 USANDO O UNION
+SELECT City,
+	   Country
+FROM Customers
+WHERE Country = 'Germany'
+UNION
+SELECT City,
+	   Country
+FROM Suppliers
+WHERE Country = 'Germany'
+ORDER BY City
+
+--EXEMPLO 2 USANDO O UNION ALL
+SELECT City,
+	   Country
+FROM Customers
+WHERE Country = 'Germany'
+UNION ALL
+SELECT City,
+	   Country
+FROM Suppliers
+WHERE Country = 'Germany'
+ORDER BY City
