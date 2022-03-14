@@ -43,3 +43,35 @@ ALTER TABLE Funcionario ADD genero CHAR(1)
 --Renomeando campo da tabela
 --EXEC sp_rename 'TabelaOrigem.CampoOrigem', 'campo_origem', 'COLUMN'
 EXEC sp_rename 'Funcionario.endereco', 'ender', 'COLUMN'
+
+--DDL: ALTERANDO O TIPO DA COLUNA
+ALTER TABLE Funcionario ALTER COLUMN ender VARCHAR(30)
+
+--DDL: EXCLUINDO COLUNA
+ALTER TABLE Funcionario DROP COLUMN genero
+
+--DDL: RENOMEANDO TABELA
+Exec sp_rename 'Funcionario', 'FUNC';
+
+--DDL: Criando database
+CREATE DATABASE teste
+--DDL: Excluindo database
+DROP DATABASE teste
+
+--DDL: EXCLUINDO TABLE
+DROP TABLE Salario
+DROP TABLE FUNC
+
+--DDL: CRIANDO UMA VIEW
+
+CREATE VIEW v_funcionarios
+	AS
+	SELECT * FROM Funcionarios
+
+--DDL: ALTERANDO UMA VIEW
+ALTER VIEW v_funcionarios
+	AS
+	SELECT ID, NOME FROM FUNCIONARIOS
+
+--DDL: EXCLUINDO UMA VIEW
+DROP VIEW v_funcionarios
