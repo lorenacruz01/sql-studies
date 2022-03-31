@@ -1,8 +1,6 @@
 --Exemplos com Subconsultas
 
-
 --PREPARANDO O BANCO PARA OS TESTES
-
 --CRIANDO TABELA DE CLIENTES
 CREATE TABLE clientes(
 	cod_cli NCHAR(5) PRIMARY KEY,
@@ -30,3 +28,19 @@ UPDATE pedidos SET total = (SELECT SUM(t2.UnitPrice*t2.Quantity) FROM NORTHWND.d
 WHERE num_ped = t2.OrderID)
 
 select * from pedidos
+exec sp_rename 'Clientes.cli_come', 'cli_nome', 'COLUMN'
+--MOSTRANDO OS CLIENTES QUE FIZERAM COMPRA ANTES DO DIA ATUAL
+
+SELECT cod_cli, 
+	   cli_nome 
+FROM clientes 
+WHERE cod_cli IN (SELECT cod_cliente 
+	FROM pedidos WHERE data < GETDATE())
+
+--MOSTRANDO OS CLIENTES QUE NÃO FIZERAM COMPRA ANTES DO DIA ATUAL
+
+SELECT cod_cli, 
+	   cli_nome 
+FROM clientes 
+WHERE cod_cli NOT IN (SELECT cod_cliente 
+	FROM pedidos WHERE data < GETDATE())
