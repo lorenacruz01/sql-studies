@@ -44,3 +44,38 @@ SELECT cod_cli,
 FROM clientes 
 WHERE cod_cli NOT IN (SELECT cod_cliente 
 	FROM pedidos WHERE data < GETDATE())
+
+
+--RETORNANDO O CAMPO CLI_NOME DA TABELA CLIENTES ATRAVÉS DE SUBQUERY
+
+SELECT p.cod_cliente, 
+	   p.num_ped, 
+	   p.data,
+	   (SELECT c.cli_nome
+			   FROM clientes c WHERE p.cod_cliente = c.cod_cli) AS NOME_CLI
+FROM pedidos AS p
+
+
+--RETORNANDO O TOTAL DE CADA CLIENTE A PARTIR DA TABELA PEDIDOS
+
+SELECT P.cod_cliente, 
+	   (SELECT C.cli_nome 
+				FROM clientes AS C 
+				WHERE C.cod_cli = P.cod_cliente) AS NAME, 
+	   SUM(P.TOTAL) AS TOTAL 
+FROM pedidos AS P 
+GROUP BY P.cod_cliente
+
+--RETORNANDO TODOS OS CLIENTES E O TOTAL DE SUAS COMPRAS A PARTIR DA TABELA PEDIDOS
+SELECT C.cod_cli,
+	   C.cli_nome AS NOME,
+	   (SELECT  ISNULL(SUM(P.TOTAL), 0) 
+	    FROM pedidos P 
+			WHERE P.cod_cliente = C.cod_cli) AS TOTAL
+FROM clientes C 
+GROUP BY cli_nome, C.cod_cli
+
+
+--ELIMINANDO CLIENTES DA TABELA CLIENTES QUE NÃO FIZERAM PEDIDOS
+DELETE FROM CLIENTES
+WHERE cod_cli NOT IN (SELECT cod_cliente FROM PEDIDOS)
