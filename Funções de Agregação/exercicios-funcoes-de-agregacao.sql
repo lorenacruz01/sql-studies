@@ -43,3 +43,27 @@ ORDER BY 2
 
 --COUNT: retorna o número de itens de um grupo
 SELECT COUNT(DISTINCT uf) FROM cidades
+
+--STDEV: retorna o desvio padrão estatístico
+SELECT STDEV(populacao) FROM cidades
+
+--STDEVP: retorna o desvio padrão estístico para a população de todos os valores na expressão especificada
+SELECT STDEVP(populacao) FROM cidades
+
+--GROUPING: indica se uma expressão de coluna especificada em uma lista GROUP BY é agregada ou não
+SELECT uf, SUM(populacao), GROUPING(uf) AS GRUPO FROM cidades GROUP BY uf WITH ROLLUP
+
+--Comparando o crescimento das cidades
+SELECT TOP 1 * FROM cidades
+SELECT TOP 1 * FROM senso_2013
+
+--concatenando colunas
+SELECT cod_uf, cod_mun, cod_uf+cod_mun FROM cidades
+
+--exemplo:
+SELECT A.nome_mun, 
+	   A.populacao AS senso_2007, 
+	   B.populacao AS senso_2013
+FROM cidades A
+INNER JOIN senso_2013 B
+	ON A.cod_uf+A.cod_mun = B.cod_mun
