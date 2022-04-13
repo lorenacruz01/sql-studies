@@ -67,3 +67,29 @@ SELECT A.nome_mun,
 FROM cidades A
 INNER JOIN senso_2013 B
 	ON A.cod_uf+A.cod_mun = B.cod_mun
+
+--crescimento populacional
+SELECT A.nome_mun, 
+	   A.populacao AS senso_2007, 
+	   B.populacao AS senso_2013,
+	   (100/CAST(a.populacao AS float))*CAST(b.populacao AS FLOAT) - 100 pct_cresc
+FROM cidades A
+INNER JOIN senso_2013 B
+	ON A.cod_uf+A.cod_mun = B.cod_mun
+--crescimento populacional por estado
+SELECT A.uf, 
+	   SUM(A.populacao) AS senso_2007, 
+	   SUM(B.populacao) AS senso_2013,
+	   (100/CAST(SUM(A.populacao) AS float))*CAST(SUM(B.populacao) AS FLOAT) - 100 pct_cresc
+FROM cidades A 
+INNER JOIN senso_2013 B
+	ON A.cod_uf+A.cod_mun = B.cod_mun
+GROUP BY A.uf
+
+--VARP: retorna a variância estatística para o preenchimento  de todos os valores da expressão especificada
+SELECT VARP(populacao) FROM cidades
+
+SELECT uf, VARP(populacao) FROM cidades GROUP BY uf
+
+SELECT uf, VAR(populacao) AS VAR, VARP(populacao) AS VARP FROM cidades GROUP BY uf
+
