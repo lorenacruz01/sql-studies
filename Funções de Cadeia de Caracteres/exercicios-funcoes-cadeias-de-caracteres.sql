@@ -28,3 +28,31 @@ DECLARE @string_to_trim VARCHAR(60)
 SET @string_to_trim = '     CINCO ESPAÇOS NO INÍCIO'
 SELECT 'TEXTO SEM ESPAÇO: ' +  LTRIM(@string_to_trim)
 SELECT 'TEXTO COM ESPAÇO: ' + @string_to_trim
+
+--RTRIM
+--RETORNA UMA EXPRESSÃO DE CARACTERES DEPOIS DE REMOVER ESPAÇOS EM BRANCO À DIREITA
+
+DECLARE @string_to_trim_right VARCHAR(60)
+SET @string_to_trim_right = 'CINCO ESPAÇOS NO FIM     '
+SELECT 'TEXTO SEM ESPAÇO: ' +  RTRIM(@string_to_trim_right)
+SELECT 'TEXTO COM ESPAÇO: ' + @string_to_trim_right
+
+
+--STR
+--RETORNA DADOS DE CARACTERES CONVERTIDOS DE DADOS NUMÉRICOS
+SELECT STR(DATALENGTH(RTRIM(@string_to_trim_right))) AS string_trim_length
+SELECT 'NÚMERO DE CARACTERES APÓS O RTRIM: ' + STR(DATALENGTH(RTRIM(@string_to_trim_right)))
+SELECT STR(123.58, 6, 2)
+
+--Quando o resultado da expressão excede o valor especificado, são retornados asteriscos
+SELECT STR(123.58, 1, 2)
+SELECT STR(123.58, 2, 2)
+SELECT STR(12345.58, 3, 2)
+
+--CONCAT: retorna uma cadeia de caracteres que é o resultado da concatenação de dois ou mais valores
+SELECT CURRENT_USER
+SELECT CONCAT(CURRENT_USER, ' SEU SALDO É: R$ ', 11.00, ' EM ', 
+DAY(GETDATE()),'/', MONTH(GETDATE()), '/', YEAR(GETDATE())) AS RESULTADO
+
+--REPLACE
+SELECT REPLACE('ABCDEFGHIJ', 'ABC', 'XXX')
