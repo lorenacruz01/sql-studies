@@ -38,6 +38,11 @@ SELECT 'TEXTO SEM ESPAÇO: ' +  RTRIM(@string_to_trim_right)
 SELECT 'TEXTO COM ESPAÇO: ' + @string_to_trim_right
 
 
+SET @string_to_trim_right = 'TESTE   '
+SELECT @string_to_trim_right + ' PRÓXIMA STRING'
+SELECT RTRIM(@string_to_trim_right) + ' PRÓXIMA STRING'
+
+
 --STR
 --RETORNA DADOS DE CARACTERES CONVERTIDOS DE DADOS NUMÉRICOS
 SELECT STR(DATALENGTH(RTRIM(@string_to_trim_right))) AS string_trim_length
@@ -89,3 +94,69 @@ SELECT C1,
 	   REPLICATE('0', 3 - DATALENGTH(C1)) + C1 AS 'Varchar Coluna',
 	   REPLICATE('0', 3 - DATALENGTH(C2)) + C2 AS 'Char Coluna'
 FROM T1
+
+--LEFT
+USE AdventureWorks2014
+SELECT Name,
+	   LEFT(NAME, 5) AS 'LEFT RESULT'
+FROM Production.Product
+ORDER BY ProductID
+
+--UPPER
+USE curso
+SELECT estado,
+       UPPER(estado) AS 'UPPER'
+FROM regiao_uf
+
+ 
+--SUBSTRING
+SELECT SUBSTRING('12345', 2, 3)
+USE AdventureWorks2014
+SELECT  LastName AS 'SOBRENOME',
+	    SUBSTRING(LastName, 1, 3) AS 'LASTNAME 1',
+		SUBSTRING(LastName, 4, 10) AS 'LASTNAME 2'
+FROM Person.Person 
+ORDER BY LastName
+
+--REVERSE
+USE AdventureWorks2014
+SELECT  LastName AS 'SOBRENOME',
+	    REVERSE(LastName) AS 'REVERSE LASTNAME'
+FROM Person.Person 
+ORDER BY LastName
+
+--LEN
+--RETORNA O NÚMERO DE CARACTERES DA EXPRESSÃO DE CADEIA DE CARACTERES ESPECIFICADA, EXCLUINDO CARACTERES EM BRANCO À DIREITA
+SELECT FirstName,
+	   LEN(FirstName) AS TAMANHO
+FROM Sales.vIndividualCustomer WHERE CountryRegionName = 'Australia'
+
+--DATALENGTH
+--RETORNA O NÚMERO DE BYTES UTILIZADO PARA REPRESENTAR QUALQUER EXPRESSÃO
+SELECT Name,
+	   DATALENGTH(Name) AS 'DATALENGTH RESULT'
+FROM Production.Product
+ORDER BY Name
+
+--COMPARANDO LEN COM DATALENGTH
+SELECT Name,
+	   LEN(Name) AS 'LEN RESULT',
+	   DATALENGTH(Name) AS 'DATALENGTH RESULT'
+FROM Production.Product
+ORDER BY Name
+
+--RIGHT
+USE curso
+SELECT estado,
+	   RIGHT(estado, 5) AS 'ESTADO'
+FROM regiao_uf
+
+--LOWER
+USE AdventureWorks2014
+SELECT Name,
+	   LOWER(SUBSTRING(Name, 1, 20)) AS LOWER,
+	   UPPER(SUBSTRING(Name, 1, 20)) AS UPPER,
+	   LOWER(UPPER(SUBSTRING(Name, 1, 20))) AS UPPERTOLOWER,
+	   UPPER(LOWER(SUBSTRING(Name, 1, 20))) AS LOWERTOUPPER
+FROM Production.Product WHERE ListPrice BETWEEN 11.00 AND 20.00
+
