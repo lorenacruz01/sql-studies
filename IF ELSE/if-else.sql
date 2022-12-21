@@ -64,3 +64,18 @@ IF (SELECT COUNT(*)
 			  FROM  ped_detalhe 
 			 WHERE  PEDIDO = @PEDIDO
 		END
+
+--IF DECLARAÇÃO DE VARIÁVEL
+--declaração
+DECLARE @IDADE INT
+--atribuição do valor
+SET @IDADE = 15
+--Se for menor do que 18 anos
+IF @IDADE < 18
+	PRINT 'MENOR QUE 18 ANOS'
+--Se  a idade estiver entre 18 e 65 anos
+ELSE IF @IDADE >= 18 AND @IDADE <= 65
+	PRINT 'ENTRE 18 E 65 ANOS'
+ELSE
+	PRINT 'MAIOR QUE 65 ANOS'
+	
