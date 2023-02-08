@@ -1,0 +1,14 @@
+USE curso
+DECLARE @variavel VARCHAR(100)
+DECLARE meuCursor
+CURSOR local FOR SELECT NOME FROM ALUNOS
+OPEN meuCursor
+FETCH next FROM meuCursor INTO @variavel
+WHILE(@@FETCH_STATUS = 0)
+	BEGIN
+		PRINT @variavel + ' FETCH STATUS -> ' + CAST(@@FETCH_STATUS AS VARCHAR(10))
+		FETCH next FROM meuCursor INTO @variavel
+	END
+	PRINT 'FETCH STATUS -> ' + CAST(@@FETCH_STATUS AS VARCHAR(10))
+	CLOSE meuCursor
+	DEALLOCATE meuCursor
