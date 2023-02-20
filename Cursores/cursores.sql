@@ -13,7 +13,7 @@ WHILE(@@FETCH_STATUS = 0)
 	CLOSE meuCursor
 	DEALLOCATE meuCursor
 
---******Exemplo 2: cursor realizando update
+/****** Exemplo 2: cursor realizando update ******/
 USE curso
 IF EXISTS(SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'clifor')
 	DROP TABLE clifor
@@ -56,7 +56,7 @@ CLOSE cursor1
 DEALLOCATE cursor1
 SELECT * FROM clifor
 
---******exemplo 3: cursor realizando insert
+/****** exemplo 3: cursor realizando insert ******/
 
 USE curso
 --criando a tabela
@@ -99,3 +99,54 @@ CLOSE cursor2
 DEALLOCATE cursor2
 
 SELECT * FROM cli_nome
+
+
+/****** exemplo 4: atualizando registros com restrição ******/
+--criando a tabela
+IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME='tabela_clientes')
+	DROP TABLE tabela_clientes
+GO
+
+CREATE TABLE tabela_clientes(
+	nome_cliente VARCHAR(200),
+	cpf_cliente VARCHAR(20)
+)
+
+--inserindo registros na tabela
+INSERT INTO tabela_clientes VALUES
+('Fábio', NULL),
+('Jorge', 21354654685),
+('Jack', NULL),
+('Peter' ,12345678912)
+
+--select * from tabela_clientes
+--declarando as variaveis a serem utilizadas
+DECLARE @nome_cliente VARCHAR(200),
+		@cpf_cliente VARCHAR(20)
+
+--declarando o cursor
+DECLARE cursor3 
+CURSOR LOCAL FOR
+SELECT  nome_cliente,
+		cpf_cliente
+FROM	tabela_clientes
+
+--abre o cursor
+OPEN cursor3
+--posiciona o ponteiro do cursor na primeira linha do select acima e insere os valores nas variáveis
+FETCH NEXT FROM cursor3 INTO @nome_cliente, @cpf_cliente
+
+--enquanto houver linhas no cursor
+WHILE @@FETCH_STATUS = 0
+	 BEGIN
+		IF(@cpf_cliente IS NULL)
+			BEGIN
+				UPDATE tabela_clientes SET cpf_cliente = 'Atualizar cpf' WHERE nome_cliente = @nome_cliente
+			END
+		FETCH NEXT FROM cursor3 INTO @nome_cliente, @cpf_cliente
+	 END
+--fechando o cursor para leitura
+CLOSE cursor3
+--finalizando o cursor
+DEALLOCATE cursor3
+SELECT * FROM tabela_clientes
