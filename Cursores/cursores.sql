@@ -13,7 +13,7 @@ WHILE(@@FETCH_STATUS = 0)
 	CLOSE meuCursor
 	DEALLOCATE meuCursor
 
---cursor realizando update
+--******Exemplo 2: cursor realizando update
 USE curso
 IF EXISTS(SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'clifor')
 	DROP TABLE clifor
@@ -55,3 +55,47 @@ WHILE @@FETCH_STATUS = 0
 CLOSE cursor1 
 DEALLOCATE cursor1
 SELECT * FROM clifor
+
+--******exemplo 3: cursor realizando insert
+
+USE curso
+--criando a tabela
+IF EXISTS(SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'cli_nome' )
+	DROP TABLE cli_nome
+GO
+CREATE TABLE cli_nome (
+	cod_cliente int not null,
+	nome_completo varchar(100) not null
+)
+--SELECT * FROM cli_nome
+
+--declarando as variaveis que serão utilizada
+DECLARE @codcliente INT,
+	    @nome VARCHAR(50),
+		@sobrenome VARCHAR(50),
+		@nomecompleto VARCHAR(100)
+
+--declarando o cursor para percorrer o conjunto de dados
+DECLARE cursor2
+CURSOR LOCAL FOR
+	SELECT  EmployeeID,
+			FirstName,
+			LastName
+	FROM	NORTHWND.dbo.Employees
+--abrindo o cursor
+OPEN cursor2
+--lendo a prox linha
+FETCH NEXT FROM cursor2 INTO @codcliente, @nome, @sobrenome
+--percorrendo as linhas do cursor
+WHILE @@FETCH_STATUS = 0
+	BEGIN
+		SET @nomecompleto = @nome + ' ' + @sobrenome
+		INSERT INTO cli_nome VALUES (@codcliente, @nomecompleto)
+		FETCH NEXT FROM cursor2 INTO @codcliente, @nome, @sobrenome
+	END
+--fechando o cursor para leitura
+CLOSE cursor2
+--finalizando o cursor
+DEALLOCATE cursor2
+
+SELECT * FROM cli_nome
